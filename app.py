@@ -40,6 +40,9 @@ if video_url:
 
             docs = split_text(transcript)
 
+            st.write(f"Transcript length: {len(transcript)}")
+            st.write(f"Chunks created: {len(docs)}")
+
             vector_store = build_vector_stores(
                 docs,
                 index_name=f"video_{video_id}"
@@ -47,7 +50,7 @@ if video_url:
 
             retriever = vector_store.as_retriever(
                 search_type='similarity',
-                search_kwargs={'k': 2}
+                search_kwargs={'k': 4}
             )
 
             st.session_state.video_id = video_id
@@ -96,6 +99,12 @@ if video_url:
                 })
 
             else:
+
+                retrieved_docs = st.session_state.rag_chain.steps[0].invoke(query)
+
+                st.write("Retrieved Context:")
+                for doc in retrieved_docs:
+                    st.write(doc.page_content[:300])
 
                 result = st.session_state.rag_chain.invoke(query)
 
