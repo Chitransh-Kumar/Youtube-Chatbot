@@ -100,7 +100,7 @@ if video_url:
 
             else:
 
-                retrieved_docs = st.session_state.rag_chain.steps[0].invoke(query)
+                retrieved_docs = st.session_state.rag_chain.input_schema["context"].invoke(query)
 
                 st.write("Retrieved Context:")
                 for doc in retrieved_docs:
